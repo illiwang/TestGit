@@ -1,0 +1,167 @@
+git安装
+
+一、Linux下安装
+Ubuntu: sudo apt-get install git
+CentOS: yum -y install git
+
+Windows下安装：
+Git官网下载：https://git-scm.com/download/win
+国内镜像地址：https://pan.baidu.com/s/1kU5OCOB#list/path=%2Fpub%2Fgit（也可以把我自己的网盘放上去）
+
+下载的文件Git-2.19.1-64-bit.ext，直接双击安装就可以。
+安装过程中有几个注意点：
+1.选择默认编辑器：Gun nano,Vim,Notepad++。根据个人喜好自己选择。我这里选择了Notepad++
+2.选择命令行工具：Git Bash 使用Git自带的命令行工具，不会修改任何操作系统的系统环境变量。
+		Windows命令行工具：自动修改系统环境变量，从而可以用windows命令行工具操作。
+3》HTTPS transport backend,不知道是什么
+4》line ending conversions
+5》terminal emulator to use with Git Bash
+6》额外配置。
+
+二、验证是否安装成功：
+廖雪峰的官方网站
+https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013743256916071d599b3aed534aaab22a0db6c4e07fd0000
+
+Windows下：
+在开始菜单找到“Git”->"Git Bash",弹出一个类似命令窗口的东西，说明Git安装成功
+Linux下：
+shell下输入git命令
+
+三、设置Git账户
+$ git config --global user.name "Your Name"
+比如：git config --global user.name "leon"
+$ git config --global user.email "email@example.com"
+比如：$ git config --global user.name "abcd@163.com"
+
+
+以下都是在Git Bash下进行操作
+
+四、创建版本库（repository）
+Windows下：
+1.先选择一个合适的地方创建一个空目录：比如我的在“D:\Git Repository”。
+2.在Git Bash中进入刚创建的目录
+	cd d:
+	cd 'Git Repository'注意，如果目录文件有多个词，目录上要加单引号。
+2.通过“git init”命令把这个目录变成Git可以管理的
+
+如果安装时添加的CMD控制，有更简单的方法，在创建目录的地方运行CMD，然后运行git init就可以
+
+四、把文件添加到版本库
+首先明确一点：说有的版本控制系统，其实只能跟踪文本文件的改动，比如txt文件，网页，所以的程序代码等等，Git也不例外。版本控制系统可以告诉你每次的改动，比如在第5行加一个单词"Linux"，在第8行删了一个单词"Windows"。而对于图片、视频这些二进制文件，虽然也能由版本控制系统管理，但没法跟踪文件的变化，只能把二进制文件每次改动串起来，也就是只知道图片从100KB，改成了120KB，但到底改了啥，版本控制系统不知道，也没法知道。
+注意的一点，Microsoft的Word格式是二进制格式，因此版本控制系统是无法跟踪Word文件改动的。
+如果要真正使用版本控制系统，就要以纯文本方式编写文件。因为文本是有编码的，比如中文有常用的GBK编码，日文有Shift_JIS编码，如果没有历史遗留问题，强烈建议使用标准的UTF-8编码，所有语言使用同一种编码，既没有冲突，又被所有平台所支持。
+
+Window用户特别注意，千万不要用自带的记事本编辑任何文本文件。
+千万不要使用Windows自带的记事本编辑任何文本文件。原因是Microsoft开发记事本的团队使用了一个非常弱智的行为来保存UTF-8编码的文件，他们自作聪明地在每个文件开头添加了0xefbbbf（十六进制）的字符，你会遇到很多不可思议的问题，比如，网页第一行可能会显示一个“?”，明明正确的程序一编译就报语法错误，等等，都是由记事本的弱智行为带来的。建议你下载Notepad++代替记事本，不但功能强大，而且免费！记得把Notepad++的默认编码设置为UTF-8 without BOM即可。
+
+在版本库中，用Notepad++创建一个文本文件，比如:test.txt
+
+第一步，用git add 告诉Git，把文件添加到仓库。
+$ git add test.txt
+git add . 表示添加目录下所有文件
+执行上面的命令，没有任何显示，这就对了，Unix的哲学是“没有消息就是好消息”，说明添加成功。
+第二步，用命令git commit告诉Git，把文件提交到仓库：
+$ git commit -m "wrote a readme file"
+简单解释一下git commit命令，-m后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。
+嫌麻烦不想输入-m "xxx"行不行？确实有办法可以这么干，但是强烈不建议你这么干，因为输入说明对自己对别人阅读都很重要。实在不想输入说明的童鞋请自行Google，我不告诉你这个参数。
+
+
+五、文件修改、状态查看与提交
+1。修改文件：用Notepad++修改文件，比如：添加文本：
+	Git is a distributed version control system.
+	Git is free software.
+2.状态查看：
+	运行git status 查看当前文件状态
+  	运行git diff对比文件前后修改
+3.修改提交（和新文件提交一样），commit类似于PRG游戏里的存档。
+	git add test.txt	
+	中间可以插入git status，查看状态，查看系统要提交修改的文件。
+	git commit -m "add text"
+	提交结束后，可以再查看状态，确认状态。
+	
+
+六、版本回退
+确定回退的版本
+git log 查看历史纪录
+Git，用HEAD表示当前版本，上一个版本就是HEAD^,上上一个版本就是HEAD^^当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。
+版本确定以后
+git reset --hard HEAD^,回退到上一个版本。也可以用版本号，不用写全，前几位就可以了，Git会自动去找。
+
+原理：Git的版本回退速度非常快，因为Git内部有个指向当前版本的HEAD指针。当回退版本时，Git仅仅是把HEAD指向改了一下。
+
+小结：
+HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
+
+穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+
+要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+
+
+七、添加远程仓库
+1.登陆GitHub
+2.在GitHub上创建一个Git仓库Algs4。（本地上也有一个Git仓库Algs4）
+	登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库 Algs4：
+	仓库创建以后，会获得一个地址：git@github.com:illikang/Algs4.git
+3，将远程仓库添加到本地仓库
+	在本地Algs4仓库下运行命令：
+	git remote add origin git@github.com:illikang/Algs4.git
+	添加后，远程库的名字就是origin，这是Git默认的叫叫法。但是origin这个名字一看就知道是远程库
+
+注意，本地上可以有多个Git本地仓库，Github上可以有多个仓库，关联是一个库关联另一个库。在一个库上运行git remote add origin关联一个远程库，这样两个库就关联起来了。
+
+4.把本地库的内容推送到远程库，用git push命令。实际上是把当前分支master（根路径）推送到远程。
+（注意，这个是仓库对仓库，而不是文件夹对仓库。如果只有文件夹有内容，而仓库没内容，是无法推送的远程仓库的）
+由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样：
+从现在起，只要本地作了提交，就可以通过命令：
+git push origin master
+把本地master分支的最新修改推送至GitHub，现在，你就拥有了真正的分布式版本库！
+
+5.用户验证
+第一次push本地仓库文件到远程仓库，会有用户信息验证。例如：
+$ git push -u origin master
+The authenticity of host 'github.com (52.74.223.119)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)?
+
+这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入yes回车即可。
+Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
+Warning: Permanently added 'github.com' (RSA) to the list of known hosts.
+这个警告只会出现一次，后面的操作就不会有任何警告了。
+如果你实在担心有人冒充GitHub服务器，输入yes前可以对照GitHub的RSA Key的指纹信息是否与SSH连接给出的一致。
+
+
+
+
+
+
+
+
+
+3.让本地仓库和远程仓库进行远程同步，这样GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，一举两得。
+
+
+github设置添加SSH
+https://www.cnblogs.com/chuyanfenfei/p/8035067.html
+
+很多朋友在用github管理项目的时候，都是直接使用https url克隆到本地，当然也有有些人使用 SSH url 克隆到本地。然而，为什么绝大多数人会使用https url克隆呢？
+
+这是因为，使用https url克隆对初学者来说会比较方便，复制https url 然后到 git Bash 里面直接用clone命令克隆到本地就好了。而使用 SSH url 克隆却需要在克隆之前先配置和添加好 SSH key 。
+
+因此，如果你想要使用 SSH url 克隆的话，你必须是这个项目的拥有者。否则你是无法添加 SSH key 的。
+
+ 
+
+https 和 SSH 的区别：
+1、前者可以随意克隆github上的项目，而不管是谁的；而后者则是你必须是你要克隆的项目的拥有者或管理员，且需要先添加 SSH key ，否则无法克隆。
+
+2、https url 在push的时候是需要验证用户名和密码的；而 SSH 在push的时候，是不需要输入用户名的，如果配置SSH key的时候设置了密码，则需要输入密码的，否则直接是不需要输入密码的。
+
+
+玩转GitHub
+新建repository。
+如何在Github上回复文件？
+Branch研究：
+项目创建默认有一个叫master的Branch
+
